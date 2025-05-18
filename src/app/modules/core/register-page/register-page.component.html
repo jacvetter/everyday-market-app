@@ -1,74 +1,167 @@
-<head>
-  <script>
-    document.getElementById("countryForm").addEventListener("submit", function (e) {
-      const country = document.getElementById("country").value;
-      if (country !== "CA") {
-        e.preventDefault();
-        alert("Only Canadian users can proceed. Please select Canada.");
-      }
-    });
-  </script>
-</head>
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+  <!-- Name -->
+  <div>
+    <label for="name">Name:</label>
+    <input type="text"
+           id="name"
+           name="name"
+           required
+           minlength="5"
+           appLettersOnly
+           ngModel
+           #name="ngModel"
+           [class.invalid]="name.invalid && name.touched"
+    />
+    <div *ngIf="name.invalid && name.touched" class="text-danger">
+      <div *ngIf="name.errors?.['required']">Name is required.</div>
+      <div *ngIf="name.errors?.['minlength']">Name must be at least 5 characters.</div>
+      <div *ngIf="name.errors?.['lettersOnly']">Only letters and spaces are allowed.</div>
+    </div>
+  </div>
 
-<body>
-  <form>
-    <div>
-      <label for="name">Name:</label><br />
-      <input type="text" id="name" name="name"
-             pattern="[A-Za-z ]{5, }" required />
+  <!-- Email -->
+  <div>
+    <label for="email">Email:</label>
+    <input
+           type="email"
+           id="email"
+           name="email"
+           required
+           ngModel
+           email
+           #email="ngModel"
+           [class.invalid]="email.invalid && email.touched"
+    />
+    <div *ngIf="email.invalid && email.touched" class="text-danger">
+      <div *ngIf="email.errors?.['required']">Email is required.</div>
+      <div *ngIf="email.errors?.['email']">Invalid email format.</div>
     </div>
-    <div>
-      <label for="email">Email:</label><br />
-      <input type="email" id="email" name="email" required />
+  </div>
+
+  <!-- Phone Number -->
+  <div>
+    <label for="phone">Phone Number:</label>
+    <input
+           type="text"
+           id="phone"
+           name="phone"
+           required
+           appPhoneNumber
+           ngModel
+           #phone="ngModel"
+           [class.invalid]="phone.invalid && phone.touched"
+    />
+    <div *ngIf="phone.invalid && phone.touched" class="text-danger">
+      <div *ngIf="phone.errors?.['required']">Phone number is required.</div>
+      <div *ngIf="phone.errors?.['phoneNumber']">Must be a 10 digit number.</div>
     </div>
-    <div>
-      <label for="phone">Phone Number:</label><br />
-      <input type="text" placeholder="123-456-7890"
-             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required />
+  </div>
+
+  <!-- Date of Birth -->
+  <div>
+    <label for="dob">Date of Birth:</label>
+    <input
+           type="date"
+           id="dob"
+           name="dob"
+           required
+           ngModel
+           #dob="ngModel"
+           [class.invalid]="dob.invalid && dob.touched"
+    />
+    <div *ngIf="dob.invalid && dob.touched" class="text-danger">
+      Date of birth is required.
     </div>
-    <div>
-      <label for="dob">Date of Birth:</label><br />
-      <input type="date" id="dob" name="dob" required />
+  </div>
+
+  <!-- Street Address -->
+  <div>
+    <label for="address">Street Address:</label>
+    <input
+           type="text"
+           id="address"
+           name="address"
+           required
+           appAddress
+           ngModel
+           #address="ngModel"
+           [class.invalid]="address.invalid && address.touched"
+    />
+    <div *ngIf="address.invalid && address.touched" class="text-danger">
+      <div *ngIf="address.errors?.['required']">Address is required.</div>
+      <div *ngIf="address.errors?.['address']">Invalid characters in address.</div>
     </div>
-    <div>
-      <label for="address">Street Address:</label><br />
-      <input type="text" id="address" name="address"
-             pattern="[A-Za-z0-9 ]+" required />
+  </div>
+
+  <!-- Province -->
+  <div>
+    <label for="province">Province:</label>
+    <select
+            id="province"
+            name="province"
+            required
+            ngModel
+            #province="ngModel"
+            [class.invalid]="province.invalid && province.touched"
+    >
+      <option value="" disabled selected>Select a province or territory</option>
+      <option value="AB">Alberta</option>
+      <option value="BC">British Columbia</option>
+      <option value="MB">Manitoba</option>
+      <option value="NB">New Brunswick</option>
+      <option value="NL">Newfoundland and Labrador</option>
+      <option value="NT">Northwest Territories</option>
+      <option value="NS">Nova Scotia</option>
+      <option value="NU">Nunavut</option>
+      <option value="ON">Ontario</option>
+      <option value="PE">Prince Edward Island</option>
+      <option value="QC">Quebec</option>
+      <option value="SK">Saskatchewan</option>
+      <option value="YT">Yukon</option>
+    </select>
+    <div *ngIf="province.invalid && province.touched" class="text-danger">
+      Province is required.
     </div>
-    <div>
-      <label for="province">Province or Territory:</label><br />
-      <select id="province" name="province" required>
-        <option value="">Select</option>
-        <option value="AB">Alberta</option>
-        <option value="BC">British Columbia</option>
-        <option value="MB">Manitoba</option>
-        <option value="NB">New Brunswick</option>
-        <option value="NL">Newfoundland and Labrador</option>
-        <option value="NS">Nova Scotia</option>
-        <option value="NT">Northwest Territories</option>
-        <option value="NU">Nunavut</option>
-        <option value="ON">Ontario</option>
-        <option value="PE">Prince Edward Island</option>
-        <option value="QC">Quebec</option>
-        <option value="SK">Saskatchewan</option>
-        <option value="YT">Yukon</option>
-      </select>
+  </div>
+
+  <!-- Country -->
+  <div>
+    <label for="country">Country:</label>
+    <select id="country"
+            name="country"
+            required
+            appMustBeCanada
+            ngModel
+            #country="ngModel"
+            [class.invalid]="country.invalid && country.touched"
+    >
+      <option value="" disabled selected>Select a country</option>
+      <option value="CA">Canada</option>
+      <option value="US">United States</option>
+    </select>
+    <div *ngIf="country.invalid && country.touched" class="text-danger">
+      <div *ngIf="country.errors?.['required']">Counrty is required.</div>
+      <div *ngIf="country.errors?.['mustBeCanada']">Only Canada is accepted.</div>
     </div>
-    <div>
-      <label for="country">Country:</label><br />
-      <select id="country" name="country" required>
-        <option value="">Select</option>
-        <option value="CA">Canada</option>
-        <option value="US">United States</option>
-      </select>
+  </div>
+
+  <!-- Terms and Conditions -->
+  <div>
+    <label for="terms">I accept the Terms and Conditions</label>
+    <input
+           type="checkbox"
+           id="terms"
+           name="terms"
+           required
+           ngModel
+           #terms="ngModel"
+           [class.invalid]="terms.invalid && terms.touched"
+    />
+    <div *ngIf="terms.invalid && terms.touched" class="text-danger">
+      You must accept the terms.
     </div>
-    <div>
-      <label for="check">Do you accept the Terms and Conditions?</label>
-      <input type="checkbox" id="check" name="check"
-             required />
-    </div>
-    <div>
-      <input type="submit" value="Submit" disabled />
-    </div>
-  </form>
-</body>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Submit</button>
+</form>

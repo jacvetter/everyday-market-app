@@ -25,3 +25,8 @@ textarea {
   .actions-panel > button:first-child {
     margin: 5px;
   }
+
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border: 2px solid red;
+}
