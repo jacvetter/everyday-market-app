@@ -4,8 +4,12 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\modules",
+    "\\src\\app\\modules\\core",
+    "\\src\\app\\modules\\core\\register-page",
+    "\\src\\app\\modules\\core\\register-page\\validators",
+    "\\src\\app\\modules\\market",
     "\\src\\app\\modules\\shared"
   ],
-  "SelectedNode": "\\src\\app\\modules\\market",
+  "SelectedNode": "\\src\\app\\app.component.html",
   "PreviewInSolutionExplorer": false
 }

@@ -1,3 +1,4 @@
+import { CoreModule } from './modules/core/core.module'
 import { MarketModule } from './modules/market/market.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -12,6 +13,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
+    CoreModule,
     SharedModule,
     MarketModule,
     AppRoutingModule

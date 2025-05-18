@@ -1,0 +1,74 @@
+<head>
+  <script>
+    document.getElementById("countryForm").addEventListener("submit", function (e) {
+      const country = document.getElementById("country").value;
+      if (country !== "CA") {
+        e.preventDefault();
+        alert("Only Canadian users can proceed. Please select Canada.");
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <form>
+    <div>
+      <label for="name">Name:</label><br />
+      <input type="text" id="name" name="name"
+             pattern="[A-Za-z ]{5, }" required />
+    </div>
+    <div>
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="email" required />
+    </div>
+    <div>
+      <label for="phone">Phone Number:</label><br />
+      <input type="text" placeholder="123-456-7890"
+             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required />
+    </div>
+    <div>
+      <label for="dob">Date of Birth:</label><br />
+      <input type="date" id="dob" name="dob" required />
+    </div>
+    <div>
+      <label for="address">Street Address:</label><br />
+      <input type="text" id="address" name="address"
+             pattern="[A-Za-z0-9 ]+" required />
+    </div>
+    <div>
+      <label for="province">Province or Territory:</label><br />
+      <select id="province" name="province" required>
+        <option value="">Select</option>
+        <option value="AB">Alberta</option>
+        <option value="BC">British Columbia</option>
+        <option value="MB">Manitoba</option>
+        <option value="NB">New Brunswick</option>
+        <option value="NL">Newfoundland and Labrador</option>
+        <option value="NS">Nova Scotia</option>
+        <option value="NT">Northwest Territories</option>
+        <option value="NU">Nunavut</option>
+        <option value="ON">Ontario</option>
+        <option value="PE">Prince Edward Island</option>
+        <option value="QC">Quebec</option>
+        <option value="SK">Saskatchewan</option>
+        <option value="YT">Yukon</option>
+      </select>
+    </div>
+    <div>
+      <label for="country">Country:</label><br />
+      <select id="country" name="country" required>
+        <option value="">Select</option>
+        <option value="CA">Canada</option>
+        <option value="US">United States</option>
+      </select>
+    </div>
+    <div>
+      <label for="check">Do you accept the Terms and Conditions?</label>
+      <input type="checkbox" id="check" name="check"
+             required />
+    </div>
+    <div>
+      <input type="submit" value="Submit" disabled />
+    </div>
+  </form>
+</body>
