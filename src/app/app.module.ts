@@ -1,3 +1,5 @@
+import { MarketModule } from './modules/market/market.module';
+import { SharedModule } from './modules/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
@@ -6,10 +8,12 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
+    SharedModule,
+    MarketModule,
     AppRoutingModule
   ],
   providers: [
