@@ -9,80 +9,34 @@ on:
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: read
-
-env:
-  AZURE_WEBAPPNAME: everyday-market-app
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
-  DOTNET_VERSION: '9.0.203'
-  
 jobs:
-  ### .NET Core Build and Deploy ###
-  dotnet_build_and_deploy:
-    runs-on: ubuntu-latest
-    name: Build & Deploy .NET Core App
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }} 
-
-      - name: dotnet build and publish
-        run: |
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish -c Release --property:PublishDir='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/everyday-market-app' 
-
-      - name: Deploy .NET app to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/everyday-market-app'
-
-      - name: Logout Azure
-        run: az logout
-
-  ### Angular Build and Deploy (Azure Static Web Apps) ###
-  angular_build_and_deploy:
+  build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build & Deploy Angular to Static Web App
-
+    name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
-
-      - name: Build and Deploy Angular
+      - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_MOSS_0C5BB4B10 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          app_location: "/"
-          api_location: ""
-          output_location: "dist/everyday-market-app/browser"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "dist/everyday-market-app/browser" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
 
-  ### Static Web App PR Cleanup ###
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
-    name: Close PR Preview Environment
-
+    name: Close Pull Request Job
     steps:
       - name: Close Pull Request
         id: closepullrequest
